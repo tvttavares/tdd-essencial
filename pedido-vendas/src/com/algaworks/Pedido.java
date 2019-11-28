@@ -16,7 +16,14 @@ public class Pedido {
 	}
 
 	public void adicionarItem(ItemPedido itemPedido) {
+		validarQuantidadeItens(itemPedido);
 		itens.add(itemPedido);
+	}
+
+	private void validarQuantidadeItens(ItemPedido itemPedido) {
+		if (itemPedido.getQuantidade() < 0) {
+			throw new QuantidadeItensInvalidaException();
+		}
 	}
 
 	public ResumoPedido resumo() {

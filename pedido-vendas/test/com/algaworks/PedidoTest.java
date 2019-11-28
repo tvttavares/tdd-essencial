@@ -5,12 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.algaworks.desconto.CalculadoraDescontoPrimeiraFaixa;
-import com.algaworks.desconto.CalculadoraDescontoSegundaFaixa;
-import com.algaworks.desconto.CalculadoraDescontoTerceiraFaixa;
-import com.algaworks.desconto.CalculadoraFaixaDesconto;
-import com.algaworks.desconto.SemDesconto;
-
 public class PedidoTest {
 
 	private PedidoBuilder pedido;
@@ -22,8 +16,10 @@ public class PedidoTest {
 
 	private void assertResumoPedido(double valorTotal, double desconto) {
 		ResumoPedido resumoPedido = pedido.construir().resumo();
-		assertEquals(valorTotal, resumoPedido.getValorTotal(), 0.0001);
-		assertEquals(desconto, resumoPedido.getDesconto(), 0.0001);
+
+//		assertEquals(valorTotal, resumoPedido.getValorTotal(), 0.0001);
+//		assertEquals(desconto, resumoPedido.getDesconto(), 0.0001);
+		assertEquals(new ResumoPedido(valorTotal, desconto), resumoPedido);
 	}
 
 	@Test
@@ -76,6 +72,11 @@ public class PedidoTest {
 		pedido.comItem(15.0, 30).comItem(15.0, 30).comItem(10.0, 30);
 
 		assertResumoPedido(1200.0, 96.0);
+	}
+
+	@Test(expected = QuantidadeItensInvalidaException.class)
+	public void naoAceitarPedidosComItensComQuantidadesNegativas() throws Exception {
+		pedido.comItem(0.0, -10);
 	}
 
 }
